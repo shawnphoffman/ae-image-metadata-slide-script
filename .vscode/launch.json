@@ -1,0 +1,23 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "extendscript-debug",
+			"request": "attach",
+			"name": "Attach to AE",
+			"hostAppSpecifier": "aftereffectsbeta",
+			// "hostAppSpecifier": "aftereffects",
+		},
+		{
+			"type": "extendscript-debug",
+			"request": "launch",
+			"name": "Launch in AE",
+			"script": "${workspaceFolder}/index.jsx",
+			"hostAppSpecifier": "aftereffectsbeta",
+			// "hostAppSpecifier": "aftereffects",
+		}
+	]
+}

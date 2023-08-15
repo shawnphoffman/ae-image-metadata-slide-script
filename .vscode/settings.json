@@ -1,0 +1,14 @@
+{
+	"[extendscript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"vsicons.associations.files": [
+		{
+			"icon": "js",
+			"extensions": [
+				"jsx"
+			],
+			"format": "svg"
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+	"name": "adobe-scripts",
+	"private": true,
+	"version": "1.0.0",
+	"description": "Slideshow and text utilities for Adobe After Effects",
+	"main": "index.jsx",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Shawn Hoffman",
+	"license": "ISC",
+	"dependencies": {},
+	"devDependencies": {
+		"prettier": "^3.0.2"
+	}
+}

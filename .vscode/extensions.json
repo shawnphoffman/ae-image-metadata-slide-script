@@ -1,0 +1,8 @@
+{
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+		"adobe.extendscript-debug",
+		"esbenp.prettier-vscode",
+	],
+	"unwantedRecommendations": [],
+}
