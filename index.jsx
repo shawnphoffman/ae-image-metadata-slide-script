@@ -78,7 +78,7 @@ var bgSolid = getByName(bgSolidName, app.project, true);
 
 var defaults = {
   createCompDuration: 10,
-  createLayerScale: 71,
+  createLayerScale: 100,
   createPrefix: "comp_",
   fontNameLoc: "AlegreyaSansSC-BlackItalic",
   fontSizeLoc: 150,
@@ -89,7 +89,7 @@ var defaults = {
   fontBottomDate: 50,
   fontLeftDate: 25,
   outTransition: 0.5,
-  outImageDuration: 2,
+  outImageDuration: 1.25,
   xmpNs: "NS_IPTC_CORE",
   xmpProperty: "Location",
 };
@@ -525,13 +525,18 @@ function createCompFromItem(item) {
     var name = getFileNameWithoutExtension(item.name);
     var compName = createPrefix.text + name;
     var duration = Number(createCompDuration.text);
+
     var scale = Number(createLayerScale.text);
+    var height = finalComp.height;
+    if (item.height < height) {
+      scale = (height / item.height) * scale;
+    }
 
     // Create the comp
     var compItem = compsFolder.items.addComp(
       compName,
       finalComp.width,
-      finalComp.height,
+      height,
       finalComp.pixelAspect,
       duration,
       finalComp.frameRate.toFixed(4)
@@ -543,6 +548,8 @@ function createCompFromItem(item) {
     layer.duration = duration;
     layer.scale.setValue([scale, scale]);
     layer.name = name;
+    // layer.width = finalComp.width;
+    // layer.height = finalComp.height;
 
     // Add a black background
     addBackgroundToComp(compItem);
@@ -587,8 +594,10 @@ function addLocationTextToComp(comp) {
   // CREATE THE TEXT LAYER
   var startTime = 0;
   var endTime = comp.duration;
-  var distanceFromTop = Number(textLocationTop.text);
-  var distanceFromLeft = Number(textLocationLeft.text);
+
+  var sizeScale = finalComp.height / 1080;
+  var distanceFromTop = Number(textLocationTop.text) * sizeScale;
+  var distanceFromLeft = Number(textLocationLeft.text) * sizeScale;
   var position = [0 + distanceFromLeft, distanceFromTop];
 
   var textLayer = comp.layers.addText(location);
@@ -597,10 +606,9 @@ function addLocationTextToComp(comp) {
   textLayer.outPoint = endTime;
   textLayer.name = "Text - " + location;
   textLayer.property("Position").setValue(position);
-
   var sourceText = textLayer.property("Source Text");
   var sourceDoc = sourceText.value;
-  sourceDoc.fontSize = Number(selectedFontSize.text);
+  sourceDoc.fontSize = Number(selectedFontSize.text) * sizeScale;
   sourceDoc.font = selectedFontFamily.selection.text;
   sourceDoc.fillColor = colorColorColorLocation;
   sourceText.setValue(sourceDoc);
@@ -637,9 +645,10 @@ function addDateTextToComp(comp) {
   // CREATE THE TEXT LAYER
   var startTime = 0;
   var endTime = comp.duration;
+  var sizeScale = finalComp.height / 1080;
   var height = comp.height;
-  var distanceFromBottom = Number(textDateBottom.text);
-  var distanceFromLeft = Number(textDateLeft.text);
+  var distanceFromBottom = Number(textDateBottom.text) * sizeScale;
+  var distanceFromLeft = Number(textDateLeft.text) * sizeScale;
   var position = [0 + distanceFromLeft, height - distanceFromBottom];
 
   // textLayer.property("Source Text").setValue(dateString);
@@ -653,7 +662,7 @@ function addDateTextToComp(comp) {
 
   var sourceText = textLayer.property("Source Text");
   var sourceDoc = sourceText.value;
-  sourceDoc.fontSize = Number(selectedFontSizeDate.text);
+  sourceDoc.fontSize = Number(selectedFontSizeDate.text) * sizeScale;
   sourceDoc.font = selectedFontFamilyDate.selection.text;
   sourceDoc.fillColor = colorColorColorDate;
   sourceText.setValue(sourceDoc);
@@ -675,9 +684,10 @@ function addDropShadowToTextLayer(textLayer) {
     app.executeCommand(dropShadowCommandId);
   }
   var ds = textLayer(stylesProperty)(shadowProperty);
+  var scale = comp.height / bgLayer.height;
   ds("Opacity").setValue(100);
-  ds("Size").setValue(17);
-  ds("Distance").setValue(5);
+  ds("Size").setValue(17 * scale);
+  ds("Distance").setValue(5 * scale);
 }
 
 function addBackgroundToComp(comp) {
@@ -696,6 +706,8 @@ function addBackgroundToComp(comp) {
     bgSolid = getByName(bgSolidName, app.project, true);
   } else {
     bgLayer = comp.layers.add(bgSolid);
+    var scale = (comp.height / bgLayer.height) * 100;
+    bgLayer.scale.setValue([scale, scale]);
   }
   bgLayer.moveToEnd();
 }
