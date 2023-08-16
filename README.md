@@ -22,6 +22,7 @@ As of Aug 2023, The font selection dropdown requires the After Effects Beta (24.
   - `./node_modules/.bin/watch "./node_modules/.bin/extendscriptr --script src/helloWorld.js --output dist/helloWord.js" src/`
 - https://github.com/ff6347/extendscript.prototypes
   - `yarn add -D extendscript.prototypes`
+  - https://dev.to/umerjaved178/polyfills-for-foreach-map-filter-reduce-in-javascript-1h13
 
 ### Notes
 

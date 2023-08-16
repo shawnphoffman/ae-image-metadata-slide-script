@@ -3,6 +3,7 @@
 		"dbaeumer.vscode-eslint",
 		"adobe.extendscript-debug",
 		"esbenp.prettier-vscode",
+		"hennamann.jsx"
 	],
 	"unwantedRecommendations": [],
 }

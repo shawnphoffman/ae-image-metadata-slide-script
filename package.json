@@ -3,7 +3,6 @@
 	"private": true,
 	"version": "1.0.0",
 	"description": "Slideshow and text utilities for Adobe After Effects",
-	"main": "index.jsx",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
