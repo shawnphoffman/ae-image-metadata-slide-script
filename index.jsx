@@ -102,7 +102,11 @@ if (app.settings.haveSetting(scriptSection, scriptSettingStrings.compsFolder)) {
     scriptSection,
     scriptSettingStrings.compsFolder
   );
-  compsFolder = app.project.itemByID(Number(s));
+  try {
+    compsFolder = app.project.itemByID(Number(s));
+  } catch (err) {
+    $.writeln("Error loading compsFolder: " + err);
+  }
   if (compsFolder) {
     $.writeln("Loading compsFolder as '" + compsFolder.name + "'...");
   }
@@ -519,7 +523,7 @@ function createCompFromItem(item) {
 
   if (
     item instanceof FootageItem &&
-    /\.(jpg|jpeg|png|gif)$/i.test(item.file.fsName)
+    /\.(jpg|jpeg|png|gif|mov)$/i.test(item.file.fsName)
   ) {
     $.writeln("Creating comp from " + item.name);
     var name = getFileNameWithoutExtension(item.name);
@@ -615,7 +619,7 @@ function addLocationTextToComp(comp) {
 
   // CREATE THE DROP SHADOW
   $.writeln("Adding drop shadow to " + comp.name);
-  addDropShadowToTextLayer(textLayer);
+  addDropShadowToTextLayer(textLayer, comp);
 }
 
 function addDateTextToComp(comp) {
@@ -669,10 +673,10 @@ function addDateTextToComp(comp) {
 
   // CREATE THE DROP SHADOW
   $.writeln("Adding drop shadow to " + comp.name);
-  addDropShadowToTextLayer(textLayer);
+  addDropShadowToTextLayer(textLayer, comp);
 }
 
-function addDropShadowToTextLayer(textLayer) {
+function addDropShadowToTextLayer(textLayer, comp) {
   var stylesProperty = "Layer Styles";
   var shadowProperty = "Drop Shadow";
   var dropShadowCommandId = 9000;
@@ -684,10 +688,12 @@ function addDropShadowToTextLayer(textLayer) {
     app.executeCommand(dropShadowCommandId);
   }
   var ds = textLayer(stylesProperty)(shadowProperty);
-  var scale = comp.height / bgLayer.height;
+  var scale = textLayer.height / 1080;
   ds("Opacity").setValue(100);
   ds("Size").setValue(17 * scale);
   ds("Distance").setValue(5 * scale);
+
+  closeComp(comp);
 }
 
 function addBackgroundToComp(comp) {
@@ -956,6 +962,22 @@ function formatDateString(inputDate) {
   var formattedDate = monthAbbrev + " " + day + " " + year;
 
   return formattedDate;
+}
+
+function closeComp(comp) {
+  comp.openInViewer();
+  var closeCommand = 4;
+  // alert(app.findMenuCommandId("Close"));
+  app.executeCommand(closeCommand);
+}
+function closeOpenComps() {
+  var comps = app.project.items;
+  for (var i = 1; i <= comps.length; i++) {
+    var comp = comps[i];
+    if (comp instanceof CompItem) {
+      closeComp(comp);
+    }
+  }
 }
 
 // ==================================================
