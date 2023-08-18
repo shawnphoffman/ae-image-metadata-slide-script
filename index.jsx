@@ -77,19 +77,29 @@ var bgSolidName = "BG-DO NOT DELETE OR RENAME";
 var bgSolid = getByName(bgSolidName, app.project, true);
 
 var defaults = {
-  createCompDuration: 10,
+  createCompDuration: 5,
   createLayerScale: 100,
   createPrefix: "comp_",
-  fontNameLoc: "AlegreyaSansSC-BlackItalic",
+  fontNameLoc: "OpenSans-Bold",
   fontSizeLoc: 150,
-  fontTopLoc: 130,
-  fontLeftLoc: 25,
-  fontNameDate: "AlegreyaSansSC-BlackItalic",
-  fontSizeDate: 80,
-  fontBottomDate: 50,
-  fontLeftDate: 25,
-  outTransition: 0.5,
-  outImageDuration: 1.25,
+  fontTopLoc: 1700,
+  fontLeftLoc: 200,
+  // fontNameLoc: "AlegreyaSansSC-BlackItalic",
+  // fontSizeLoc: 120,
+  // fontTopLoc: 1030,
+  // fontLeftLoc: 25,
+  fontNameDate: "OpenSans-Bold",
+  fontSizeDate: 175,
+  fontTopDate: 1975,
+  fontLeftDate: 200,
+  // fontNameDate: "AlegreyaSansSC-BlackItalic",
+  // fontSizeDate: 80,
+  // fontBottomDate: 50,
+  // fontLeftDate: 1475,
+  // fontBottomDate: 50,
+  // fontLeftDate: 25,
+  outTransition: 0.4,
+  outImageDuration: 1.0,
   xmpNs: "NS_IPTC_CORE",
   xmpProperty: "Location",
 };
@@ -285,8 +295,11 @@ groupXmp.add("statictext", undefined, "XMP Property");
 var xmpProperty = groupXmp.add("edittext", undefined, defaults.xmpProperty);
 xmpProperty.minimumSize = [80, -1];
 
+var groupButtLoc = panelLocation.add("group", undefined);
+groupButtLoc.orientation = "row";
+
 var colorColorColorLocation = [1, 1, 1];
-var buttonColorLoc = panelLocation.add(
+var buttonColorLoc = groupButtLoc.add(
   "button",
   undefined,
   "Color: " + colorColorColorLocation.toString()
@@ -298,7 +311,7 @@ buttonColorLoc.onClick = function () {
   buttonColorLoc.text = "Color: " + colorColorColorLocation.toString();
 };
 
-var buttonAddLocationText = panelLocation.add(
+var buttonAddLocationText = groupButtLoc.add(
   "button",
   undefined,
   "Add locations to selection"
@@ -340,13 +353,13 @@ var selectedFontSizeDate = groupTextDate.add(
 );
 selectedFontSizeDate.minimumSize = minSizeTextNumber;
 
-groupTextDate.add("statictext", undefined, "Bottom");
-var textDateBottom = groupTextDate.add(
+groupTextDate.add("statictext", undefined, "Top");
+var textDateTop = groupTextDate.add(
   "edittext",
   undefined,
-  defaults.fontBottomDate
+  defaults.fontTopDate
 );
-textDateBottom.minimumSize = minSizeTextNumber;
+textDateTop.minimumSize = minSizeTextNumber;
 
 groupTextDate.add("statictext", undefined, "Left");
 var textDateLeft = groupTextDate.add(
@@ -356,8 +369,11 @@ var textDateLeft = groupTextDate.add(
 );
 textDateLeft.minimumSize = minSizeTextNumber;
 
+var groupButtDate = panelDate.add("group", undefined);
+groupButtDate.orientation = "row";
+
 var colorColorColorDate = [1, 1, 1];
-var buttonColor = panelDate.add(
+var buttonColor = groupButtDate.add(
   "button",
   undefined,
   "Color: " + colorColorColorDate.toString()
@@ -369,7 +385,7 @@ buttonColor.onClick = function () {
   buttonColor.text = "Color: " + colorColorColorDate.toString();
 };
 
-var buttonAddDateText = panelDate.add(
+var buttonAddDateText = groupButtDate.add(
   "button",
   undefined,
   "Add dates to selection"
@@ -599,20 +615,23 @@ function addLocationTextToComp(comp) {
   var startTime = 0;
   var endTime = comp.duration;
 
-  var sizeScale = finalComp.height / 1080;
-  var distanceFromTop = Number(textLocationTop.text) * sizeScale;
-  var distanceFromLeft = Number(textLocationLeft.text) * sizeScale;
-  var position = [0 + distanceFromLeft, distanceFromTop];
+  // var sizeScale = finalComp.height / 1080;
+  // var distanceFromTop = Number(textLocationTop.text) * sizeScale;
+  // var distanceFromLeft = Number(textLocationLeft.text) * sizeScale;
+  var distanceFromTop = Number(textLocationTop.text);
+  var distanceFromLeft = Number(textLocationLeft.text);
+  var position = [distanceFromLeft, distanceFromTop];
 
   var textLayer = comp.layers.addText(location);
   textLayer.startTime = startTime;
   textLayer.inPoint = startTime;
   textLayer.outPoint = endTime;
-  textLayer.name = "Text - " + location;
+  textLayer.name = "LOC - " + location;
   textLayer.property("Position").setValue(position);
   var sourceText = textLayer.property("Source Text");
   var sourceDoc = sourceText.value;
-  sourceDoc.fontSize = Number(selectedFontSize.text) * sizeScale;
+  // sourceDoc.fontSize = Number(selectedFontSize.text) * sizeScale;
+  sourceDoc.fontSize = Number(selectedFontSize.text);
   sourceDoc.font = selectedFontFamily.selection.text;
   sourceDoc.fillColor = colorColorColorLocation;
   sourceText.setValue(sourceDoc);
@@ -649,15 +668,18 @@ function addDateTextToComp(comp) {
   // CREATE THE TEXT LAYER
   var startTime = 0;
   var endTime = comp.duration;
-  var sizeScale = finalComp.height / 1080;
-  var height = comp.height;
-  var distanceFromBottom = Number(textDateBottom.text) * sizeScale;
-  var distanceFromLeft = Number(textDateLeft.text) * sizeScale;
-  var position = [0 + distanceFromLeft, height - distanceFromBottom];
+  var sizeScale = 1;
+  // var sizeScale = finalComp.height / 1080;
+  // var height = comp.height;
+  // var distanceFromBottom = Number(textDateBottom.text) * sizeScale;
+  var distanceFromTop = Number(textDateTop.text);
+  var distanceFromLeft = Number(textDateLeft.text);
+  // var position = [0 + distanceFromLeft, height - distanceFromBottom];
+  var position = [distanceFromLeft, distanceFromTop];
 
   // textLayer.property("Source Text").setValue(dateString);
   var textLayer = comp.layers.addText(dateString);
-  textLayer.name = "Text - " + dateString;
+  textLayer.name = "DATE - " + dateString;
 
   textLayer.startTime = startTime;
   textLayer.inPoint = startTime;
@@ -666,7 +688,8 @@ function addDateTextToComp(comp) {
 
   var sourceText = textLayer.property("Source Text");
   var sourceDoc = sourceText.value;
-  sourceDoc.fontSize = Number(selectedFontSizeDate.text) * sizeScale;
+  // sourceDoc.fontSize = Number(selectedFontSizeDate.text) * sizeScale;
+  sourceDoc.fontSize = Number(selectedFontSizeDate.text);
   sourceDoc.font = selectedFontFamilyDate.selection.text;
   sourceDoc.fillColor = colorColorColorDate;
   sourceText.setValue(sourceDoc);
@@ -693,7 +716,9 @@ function addDropShadowToTextLayer(textLayer, comp) {
   ds("Size").setValue(17 * scale);
   ds("Distance").setValue(5 * scale);
 
-  closeComp(comp);
+  if (app.project.selection && app.project.selection[0].id !== comp.id) {
+    closeComp(comp);
+  }
 }
 
 function addBackgroundToComp(comp) {
