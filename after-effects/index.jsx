@@ -78,26 +78,16 @@ var bgSolid = getByName(bgSolidName, app.project, true);
 
 var defaults = {
   createCompDuration: 5,
-  createLayerScale: 100,
+  createLayerScale: 188,
   createPrefix: "comp_",
   fontNameLoc: "OpenSans-Bold",
-  fontSizeLoc: 150,
-  fontTopLoc: 1700,
+  fontSizeLoc: 110,
+  fontTopLoc: 1800,
   fontLeftLoc: 200,
-  // fontNameLoc: "AlegreyaSansSC-BlackItalic",
-  // fontSizeLoc: 120,
-  // fontTopLoc: 1030,
-  // fontLeftLoc: 25,
   fontNameDate: "OpenSans-Bold",
-  fontSizeDate: 175,
+  fontSizeDate: 140,
   fontTopDate: 1975,
   fontLeftDate: 200,
-  // fontNameDate: "AlegreyaSansSC-BlackItalic",
-  // fontSizeDate: 80,
-  // fontBottomDate: 50,
-  // fontLeftDate: 1475,
-  // fontBottomDate: 50,
-  // fontLeftDate: 25,
   outTransition: 0.4,
   outImageDuration: 1.0,
   xmpNs: "NS_IPTC_CORE",
@@ -548,9 +538,9 @@ function createCompFromItem(item) {
 
     var scale = Number(createLayerScale.text);
     var height = finalComp.height;
-    if (item.height < height) {
-      scale = (height / item.height) * scale;
-    }
+    // if (item.height < height) {
+    //   scale = (height / item.height) * scale;
+    // }
 
     // Create the comp
     var compItem = compsFolder.items.addComp(
@@ -995,6 +985,7 @@ function closeComp(comp) {
   // alert(app.findMenuCommandId("Close"));
   app.executeCommand(closeCommand);
 }
+
 function closeOpenComps() {
   var comps = app.project.items;
   for (var i = 1; i <= comps.length; i++) {
@@ -1003,57 +994,4 @@ function closeOpenComps() {
       closeComp(comp);
     }
   }
-}
-
-// ==================================================
-// UNUSED BUT LIKELY HELPFUL
-// ==================================================
-function createFolder(parent, name) {
-  if (activeItem.typeName !== "Folder") {
-    alert("Please select a folder");
-  }
-
-  var folder = parent.items.addFolder(name);
-  return folder;
-}
-
-function renameItem(item, name) {
-  item.name = name;
-}
-
-function padNumberWithZeros(number, length) {
-  var numberString = number.toString();
-
-  var zerosToAdd = Math.max(0, length - numberString.length);
-
-  var zeroString = "0".repeat(zerosToAdd);
-
-  var paddedNumberString = zeroString + numberString;
-
-  return paddedNumberString;
-}
-
-function formatDateToCustomString(inputDate) {
-  var months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  var year = inputDate.getFullYear();
-  var monthIndex = inputDate.getMonth();
-  var day = inputDate.getDate();
-
-  var formattedDate = months[monthIndex] + " " + day + " " + year;
-
-  return formattedDate;
 }
