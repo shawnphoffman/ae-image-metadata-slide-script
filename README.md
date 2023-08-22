@@ -2,6 +2,8 @@
 
 A set of slideshow and text utilities for Adobe After Effects.
 
+<img width="344" alt="image" src="https://github.com/shawnphoffman/ae-photo-slideshow/assets/1154273/d85ca9d6-15b9-4c4c-b0e8-4ef0a338fa55">
+
 ## Inspiration
 
 PCT selfie video.
