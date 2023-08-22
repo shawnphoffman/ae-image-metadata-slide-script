@@ -1,1 +1,4 @@
 node_modules/
+image-processing/data/**
+image-processing/images/in/**
+image-processing/images/out/**
