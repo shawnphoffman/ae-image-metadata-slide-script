@@ -1,15 +1,22 @@
 {
-	"name": "adobe-scripts",
+	"name": "ae-photo-slideshow",
 	"private": true,
 	"version": "1.0.0",
 	"description": "Slideshow and text utilities for Adobe After Effects",
 	"scripts": {
+		"start": "node ./image-processing/index.mjs",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Shawn Hoffman",
 	"license": "ISC",
-	"dependencies": {},
-	"devDependencies": {
+	"dependencies": {
+		"chalk": "^5.3.0",
+		"exiftool-vendored": "^22.0.0",
+		"fs": "^0.0.1-security",
+		"geonames.js": "^3.0.6",
 		"prettier": "^3.0.2"
+	},
+	"engines": {
+		"node": "20.x"
 	}
 }
