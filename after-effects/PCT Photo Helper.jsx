@@ -76,7 +76,6 @@ var scriptSettingStrings = {
   finalComp: "finalComp",
 };
 var bgSolidName = "BG-DO NOT DELETE OR RENAME";
-var bgSolid = getByName(bgSolidName, app.project, true);
 
 var defaults = {
   createCompDuration: 5,
@@ -128,6 +127,8 @@ if (app.settings.haveSetting(scriptSection, scriptSettingStrings.finalComp)) {
 
 var dialog = (function () {
   $.writeln("Creating the window...");
+
+  var bgSolid = getByName(bgSolidName, app.project, true);
 
   // ==================================================
   // DIALOG
@@ -383,7 +384,6 @@ var dialog = (function () {
   button3.preferredSize.height = 20;
   button3.justify = "left";
   updateButtonColour(button3, [1, 1, 1]);
-
   button3.onClick = function () {
     var colorPickerRes = $.colorPicker(colorColorColorLocation);
     if (colorPickerRes != -1) {
@@ -391,7 +391,7 @@ var dialog = (function () {
       var g = (colorPickerRes & 0x00ff00) >> 8;
       var b = colorPickerRes & 0xff;
       $.writeln("selected a colour");
-      colorColorColorLocation = colorPickerRes;
+      colorColorColorLocation = [r / 255, g / 255, b / 255];
       updateButtonColour(button3, [r / 255, g / 255, b / 255]);
     } else {
       $.writeln("did not select a colour");
@@ -530,7 +530,7 @@ var dialog = (function () {
       var g = (colorPickerRes & 0x00ff00) >> 8;
       var b = colorPickerRes & 0xff;
       $.writeln("selected a colour");
-      colorColorColorDate = colorPickerRes;
+      colorColorColorDate = [r / 255, g / 255, b / 255];
       updateButtonColour(button5, [r / 255, g / 255, b / 255]);
     } else {
       $.writeln("did not select a colour");
@@ -816,8 +816,7 @@ var dialog = (function () {
     var sourceDoc = sourceText.value;
     sourceDoc.fontSize = Number(selectedFontSize.text);
     sourceDoc.font = selectedFontFamily.selection.text;
-    // sourceDoc.fillColor = colorColorColorLocation;
-    sourceDoc.fillColor = [1, 1, 1];
+    sourceDoc.fillColor = colorColorColorLocation;
     sourceText.setValue(sourceDoc);
 
     // CREATE THE DROP SHADOW
@@ -869,8 +868,8 @@ var dialog = (function () {
     var sourceDoc = sourceText.value;
     sourceDoc.fontSize = Number(selectedFontSizeDate.text);
     sourceDoc.font = selectedFontFamilyDate.selection.text;
-    // sourceDoc.fillColor = colorColorColorDate;
-    sourceDoc.fillColor = [1, 1, 1];
+    sourceDoc.fillColor = colorColorColorDate;
+    // sourceDoc.fillColor = [1, 1, 1];
     sourceText.setValue(sourceDoc);
 
     // CREATE THE DROP SHADOW
